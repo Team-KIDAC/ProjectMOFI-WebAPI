@@ -13,10 +13,10 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
         public MongoConnection(IConfiguration config) {
             _config = config;
 
-            databaseName = _config.GetValue<string>("MongoDetails:DatabaseName");
-            collectionName = _config.GetValue<string>("MongoDetails:CollectionName");
+            databaseName = _config["MongoDetails-DatabaseName"];
+            collectionName = _config["MongoDetails-CollectionName"];
 
-            var client = new MongoClient(_config.GetValue<string>("MongoDetails:ConnectionString"));
+            var client = new MongoClient(_config["MongoDetails-ConnectionString"]);
             db = client.GetDatabase(databaseName);
         }
 
