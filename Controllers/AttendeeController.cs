@@ -6,11 +6,9 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
     [ApiController]
     public class AttendeeController : ControllerBase {
 
-        IWebHostEnvironment _webHostEnvironment;
         MongoConnection _connection;
 
-        public AttendeeController(IWebHostEnvironment env, IConfiguration config) {
-            _webHostEnvironment = env;
+        public AttendeeController(IConfiguration config) {
             _connection = new MongoConnection(config);
         }
 
