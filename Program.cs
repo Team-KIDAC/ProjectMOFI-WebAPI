@@ -1,25 +1,25 @@
-using Azure.Identity;
-
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsProduction()) {
-    var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-    builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-}
-
 // Add services to the container.
+
 builder.Services.AddControllers();
-builder.Services.AddSwaggerDocument();
+builder.Services.AddRazorPages();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
-    app.UseOpenApi();
-    app.UseSwaggerUi3();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-//app.MapGet("/", () => "Hello World!");
+app.UseAuthorization();
+
 app.MapControllers();
+app.MapRazorPages();
 
 app.Run();

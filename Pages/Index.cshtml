@@ -1,0 +1,25 @@
+﻿@page
+@model API.MOFI_2.Pages.IndexModel
+@{
+    <video id="player" controls autoplay></video>
+    <button onclick="sayIt()" id="myBtn">Try it</button>
+
+    <script>
+        const player = document.getElementById('player');
+
+        const constraints = {
+          video: true,
+        };
+
+        navigator.mediaDevices.getUserMedia(constraints)
+          .then((stream) => {
+            player.srcObject = stream;
+          });
+
+        document.getElementById("myBtn").onclick() = sayIt;
+        
+        function sayIt() {
+            alert("It Worked!");
+        }
+    </script>
+}
