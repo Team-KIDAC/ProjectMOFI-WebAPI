@@ -6,9 +6,13 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
     [ApiController]
     public class AttendeeController : ControllerBase {
 
+        IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _config;
         MongoConnection _connection;
 
-        public AttendeeController(IConfiguration config) {
+        public AttendeeController(IWebHostEnvironment env, IConfiguration config) {
+            _config = config;
+            _webHostEnvironment = env;
             _connection = new MongoConnection(config);
         }
 
@@ -22,5 +26,6 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
                 return StatusCode(500);
             }
         }
+
     }
 }
