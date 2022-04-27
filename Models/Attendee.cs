@@ -8,5 +8,6 @@ namespace ProjectMOFI_Server_WebAPI.Models {
         public string Name { get; init; }
         public string Department { get; init; }
         public string Vaccine { get; init; }
+        public string ImagePath { get; init; } 
     }
 }
