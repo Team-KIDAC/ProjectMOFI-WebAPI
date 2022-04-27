@@ -57,7 +57,7 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
                 if (string.IsNullOrWhiteSpace(jasonObj.GetValue("id").ToString())) {
                     return BadRequest();
                 }
-                return await Task.FromResult(Ok(_connection.LoadRecordById(jasonObj.GetValue("id").ToString())));
+                return await Task.FromResult(Ok(_connection.LoadUserById(jasonObj.GetValue("id").ToString())));
             }
             catch (ArgumentException ex) {
                 return StatusCode(404, ex.Message);

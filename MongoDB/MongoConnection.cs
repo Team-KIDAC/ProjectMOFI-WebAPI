@@ -8,31 +8,32 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
 
         private IMongoDatabase db;
         private string databaseName;
-        private string collectionName;
+        private string userCollectionName;
+        private string attendaceRecordCollectionName = "AttendanceRecords";
 
         public MongoConnection(IConfiguration config) {
             _config = config;
 
             databaseName = _config["MongoDetails-DatabaseName"];
-            collectionName = _config["MongoDetails-CollectionName"];
+            userCollectionName = _config["MongoDetails-CollectionName"];
 
             var client = new MongoClient(_config["MongoDetails-ConnectionString"]);
             db = client.GetDatabase(databaseName);
         }
 
         public void InsertUser(Attendee newAttendee) {
-            var collection = db.GetCollection<Attendee>(collectionName);
+            var collection = db.GetCollection<Attendee>(userCollectionName);
             collection.InsertOne(newAttendee);
         }
 
-        public List<Attendee> LoadRecords() {
-            var collection = db.GetCollection<Attendee>(collectionName);
+        public List<Attendee> LoadUsers() {
+            var collection = db.GetCollection<Attendee>(userCollectionName);
 
             return collection.Find(new BsonDocument()).ToList();
         }
 
-        public Attendee LoadRecordById(string id) {
-            var collection = db.GetCollection<Attendee>(collectionName);
+        public Attendee LoadUserById(string id) {
+            var collection = db.GetCollection<Attendee>(userCollectionName);
             var filter = Builders<Attendee>.Filter.Eq("Id", id);
 
             if (collection.Find(filter).Any()) {
@@ -41,11 +42,10 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
             else {
                 throw new ArgumentException("[ERROR] - Invalid ID provided.");
             }
-
         }
 
-        public void DeleteRecord(string id) {
-            var collection = db.GetCollection<Attendee>(collectionName);
+        public void DeleteUser(string id) {
+            var collection = db.GetCollection<Attendee>(userCollectionName);
             var filter = Builders<Attendee>.Filter.Eq("Id", id);
             if (collection.Find(filter).Any()) {
                 collection.DeleteOne(filter);
@@ -54,6 +54,17 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
                 throw new ArgumentException("[Error] - No such ID available.");
             }
 
+        }
+
+        public void InsertAttendaceRecord(AttendanceRecord newAttendanceRecord) {
+            var collection = db.GetCollection<AttendanceRecord>(attendaceRecordCollectionName);
+            collection.InsertOne(newAttendanceRecord);
+        }
+
+        public List<AttendanceRecord> LoadAttendaceRecords() {
+            var collection = db.GetCollection<AttendanceRecord>(attendaceRecordCollectionName);
+
+            return collection.Find(new BsonDocument()).ToList();
         }
     }
 }
