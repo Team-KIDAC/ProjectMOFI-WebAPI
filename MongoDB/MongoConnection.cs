@@ -1,6 +1,8 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using ProjectMOFI_Server_WebAPI.Comparers;
 using ProjectMOFI_Server_WebAPI.Models;
+using System.Collections.Generic;
 
 namespace ProjectMOFI_Server_WebAPI.MongoDB {
     public class MongoConnection {
@@ -62,9 +64,10 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
         }
 
         public List<AttendanceRecord> LoadAttendaceRecords() {
-            var collection = db.GetCollection<AttendanceRecord>(attendaceRecordCollectionName);
-
-            return collection.Find(new BsonDocument()).ToList();
+            IMongoCollection<AttendanceRecord> collection = db.GetCollection<AttendanceRecord>(attendaceRecordCollectionName);
+            List<AttendanceRecord> generatedList = collection.Find(new BsonDocument()).ToList();
+            generatedList.Sort(new SortAttendanceRecordsByDateComparer());
+            return generatedList;
         }
     }
 }
