@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using ProjectMOFI_Server_WebAPI.Models;
 using ProjectMOFI_Server_WebAPI.MongoDB;
 
@@ -11,10 +13,14 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
         private readonly IConfiguration _config;
         MongoConnection _connection;
 
+        private string blobConnectionString;
+
         public AttendeeController(IWebHostEnvironment env, IConfiguration config) {
             _config = config;
             _webHostEnvironment = env;
             _connection = new MongoConnection(config);
+
+            blobConnectionString = _config["BlobDetails-ConnectionString"];
         }
 
         [HttpGet]
@@ -62,8 +68,32 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
             }
         }
 
+        [HttpPost("UploadAttendeeImage")]
+        public async Task<IActionResult> PostAttendee(AttendeeImage attendeeImage) {
+            try {
+                CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobConnectionString);
+                CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+                CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference("mofi-user-images");
+
+                string newFileName = attendeeImage.AttendeeId + "_UserImage.jpg";
+                var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(newFileName);
+                cloudBlockBlob.Properties.ContentType = "image/jpeg";
+
+                using (var stream = new MemoryStream(Convert.FromBase64String(attendeeImage.Base64String))) {
+                    await cloudBlockBlob.UploadFromStreamAsync(stream);
+                }
+
+                string imageUploadedPath = "https://mofiblob.blob.core.windows.net/mofi-user-images/" + attendeeImage.AttendeeId + "_UserImage.jpg";
+                return await Task.FromResult(Created("", imageUploadedPath));
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.StackTrace);
+                return StatusCode(500, "[ERROR]- An unexpected error occured!");
+            }
+        }
+
         [HttpPost]
-        public async Task<IActionResult> PostAttendee(Attendee newAttendee) {
+        public async Task<IActionResult> PostAttendeeImage(Attendee newAttendee) {
             try {
                 _connection.InsertUser(newAttendee);
                 return await Task.FromResult(Created("", newAttendee));
@@ -73,7 +103,6 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
                 return StatusCode(500, "[ERROR]- An unexpected error occured!");
             }
         }
-        
 
     }
 }
