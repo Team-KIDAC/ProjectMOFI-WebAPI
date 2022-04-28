@@ -6,6 +6,7 @@ namespace ProjectMOFI_Server_WebAPI.Models {
         public string AttendanceRecordId { get; init; }
         public string AttendeeId{ get; init; }
         public string AttendeeName { get; init; }
+        public string ImagePath { get; init; }
         public string AttendanceDate { get; init; }
         public string AttendanceTime { get; init; }
 
