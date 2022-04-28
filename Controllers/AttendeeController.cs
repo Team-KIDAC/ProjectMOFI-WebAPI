@@ -44,6 +44,23 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
                 return StatusCode(500, "[ERROR]- An unexpected error occured!");
             }
         }
+        
+        [HttpGet("{id}/ImagePath")]
+        public async Task<IActionResult> GetImagePathOfAttendee(string id) {
+            try {
+                if (string.IsNullOrWhiteSpace(id)) {
+                    return BadRequest();
+                }
+                return await Task.FromResult(Ok(_connection.LoadUserImagePathById(id)));
+            }
+            catch (ArgumentException ex) {
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.StackTrace);
+                return StatusCode(500, "[ERROR]- An unexpected error occured!");
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> PostAttendee(Attendee newAttendee) {

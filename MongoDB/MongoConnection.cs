@@ -69,5 +69,17 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
             generatedList.Sort(new SortAttendanceRecordsByDateComparer());
             return generatedList;
         }
+
+        public string LoadUserImagePathById(string id) {
+            var collection = db.GetCollection<Attendee>(userCollectionName);
+            var filter = Builders<Attendee>.Filter.Eq("Id", id);
+
+            if (collection.Find(filter).Any()) {
+                return collection.Find(filter).First().ImagePath;
+            }
+            else {
+                throw new ArgumentException("[ERROR] - Invalid ID provided.");
+            }
+        }
     }
 }
