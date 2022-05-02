@@ -1,31 +1,30 @@
-{
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:13016",
-      "sslPort": 44318
+      "applicationUrl": "http://localhost:9921",
+      "sslPort": 44313
     }
   },
   "profiles": {
-    "ProjectMOFI_Server_WebAPI": {
+    "MOFIAPI": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7055;http://localhost:5055",
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7041;http://localhost:5041",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "VaultUri": "https://vaultmofi.vault.azure.net/",
-        "AZURE_USERNAME": "kalindu.rithmal.prof_acc@outlook.com"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "VaultUri": "https://vaultmofi.vault.azure.net/",
-        "AZURE_USERNAME": "kalindu.rithmal.prof_acc@outlook.com"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }

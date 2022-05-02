@@ -12,6 +12,7 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
         private string databaseName;
         private string userCollectionName;
         private string attendaceRecordCollectionName = "AttendanceRecords";
+        private string loginUserHashesCollectionName = "UserHashes";
 
         public MongoConnection(IConfiguration config) {
             _config = config;
@@ -79,6 +80,30 @@ namespace ProjectMOFI_Server_WebAPI.MongoDB {
             }
             else {
                 throw new ArgumentException("[ERROR] - Invalid ID provided.");
+            }
+        }
+
+        public void InsertLoginUserHash(LoginUser loginUser) {
+            var collection = db.GetCollection<LoginUser>(loginUserHashesCollectionName);
+            try {
+                collection.InsertOne(loginUser);
+            }
+            catch (MongoWriteException ex) {
+                if(ex.WriteError.Code == 11000) {
+                    throw new ArgumentException("The username already registered!");
+                }
+            }
+        }
+
+        public LoginUser LoadLoginUserByUsername(string username) {
+            var collection = db.GetCollection<LoginUser>(loginUserHashesCollectionName);
+            var filter = Builders<LoginUser>.Filter.Eq("Username", username);
+
+            if (collection.Find(filter).Any()) {
+                return collection.Find(filter).First();
+            }
+            else {
+                throw new ArgumentException("[ERROR] - Invalid username provided.");
             }
         }
     }
