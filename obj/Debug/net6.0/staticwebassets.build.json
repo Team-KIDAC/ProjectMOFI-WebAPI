@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "4DbiR6020v7ldp/9JfUS4cxNKU3LyIsYfODvfscNPCM=",
-  "Source": "ProjectMOFI_Server_WebAPI",
-  "BasePath": "_content/ProjectMOFI_Server_WebAPI",
+  "Hash": "hKW5YTHOxs8Khh0GtqUKTZHKgIv4TgaXgqkXY8CmwCE=",
+  "Source": "MOFIAPI",
+  "BasePath": "_content/MOFIAPI",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

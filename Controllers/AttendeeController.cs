@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 using ProjectMOFI_Server_WebAPI.Models;
@@ -6,7 +7,7 @@ using ProjectMOFI_Server_WebAPI.MongoDB;
 
 namespace ProjectMOFI_Server_WebAPI.Controllers {
     [Route("[controller]")]
-    [ApiController]
+    [ApiController, Authorize(Roles = "Student")]
     public class AttendeeController : ControllerBase {
 
         IWebHostEnvironment _webHostEnvironment;
@@ -69,7 +70,7 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
         }
 
         [HttpPost("UploadAttendeeImage")]
-        public async Task<IActionResult> PostAttendee(AttendeeImage attendeeImage) {
+        public async Task<IActionResult> PostAttendeeImage(AttendeeImage attendeeImage) {
             try {
                 CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobConnectionString);
                 CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
@@ -93,7 +94,7 @@ namespace ProjectMOFI_Server_WebAPI.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAttendeeImage(Attendee newAttendee) {
+        public async Task<IActionResult> PostAttendee(Attendee newAttendee) {
             try {
                 _connection.InsertUser(newAttendee);
                 return await Task.FromResult(Created("", newAttendee));

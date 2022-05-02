@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "restored": true,
+      "restoreTime": "2022-05-01T14:35:55.3353672Z"
+    },
+    "secrets1": {
+      "restored": true,
+      "restoreTime": "2022-05-01T13:20:30.7275319Z"
+    }
+  },
+  "parameters": {
+    "secrets1.resourceGroupName": {
+      "Name": "secrets1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "ProjectMOFI"
+    },
+    "secrets1.subscriptionId": {
+      "Name": "secrets1.subscriptionId",
+      "Type": "subscription",
+      "Value": "480fb6b8-18e7-436d-b2ea-8082c4ce13f2"
+    }
+  }
+}
